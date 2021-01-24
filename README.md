@@ -14,6 +14,16 @@ A simple spring boot service to give a user a way to manage and create Wish list
 
 The serivce is not reactive, and will use PostgreSQL as Database, and springboot web.
 
+## Installation
+
+* Running MongoDB local database from the following command: `docker run --name mongotest -p 27017:27017 -d mongo`
+* `git clone https://github.com/Omrisha/WishlistService`
+* Open project in IntelliJ (Open project menu or import from git menu)
+* Open project in Eclipse (File -> Import -> Import existing Gradle Project menu)
+* after opening let gradle built and make the project.
+* Run (Eclipse -> Run as SpringBoot App, IntelliJ -> via Play button)
+* Open http://localhost:{port you defined in application.properties}/swagger-ui.html in your browser.
+
 ## JSON Structure
 
 * List:
