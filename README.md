@@ -4,9 +4,9 @@ This service is a final project for Cloud Computing Course in Afeka College of M
 
 ## Team
 
-Omri Shapira - Team Leader - 203554720
-Gal Odentz - 205892250
-Alon Bukai - 305347007
+* Omri Shapira - Team Leader - 203554720
+* Gal Odentz - 205892250
+* Alon Bukai - 305347007
 
 ## Service Description
 
@@ -73,21 +73,21 @@ The serivce is not reactive, and will use PostgreSQL as Database, and springboot
 Get new wishlist details and creates it in the DB if not exist already.
 If the user is not exist in UserManagementService the service will return status code 400.
 
-- GET /wishlist/{name}
+- GET /wishlist/{email}/{wishlistName}
 Get wishlist data by its name.
 If not exist will return status code 404.
 
-- PUT /wishlist/{email}?name={name}
+- PUT /wishlist/{email}/{wishlistName}
 Add new product to wishlist by its name and specific user.
 To get product rating we will inteface the Products Reviews Management Service.
 If there's no rating the value will be -1.
 If there's no wishlist with the same name for the user it will return status code 404.
 
-- GET /wishlist?filterType=byUserEmail&filterValue={value}&sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
+- GET /wishlist?filterBy=productId&filterValue={productId}&sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
 Get all wishlist for the user specified by the email and ordered.
 Order details below.
 
-- GET /wishlist?sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
+- GET /wishlist?filterBy=customerEmail&filterValue={customerEmail}&&sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
 Get all wishlist by specific order.
 Order details below.
 
@@ -95,10 +95,8 @@ Order details below.
 delete all wishlists in the database
 
 * sortAttrEnum can be:
-  rating - sort by products rating
   user - sort alphabetic by user email
   name - sort alpabetic by list name
-  product - sort alphabetic by product name
 * sortOrderEnum can be:
   ASC - Ascending order
   DESC - descending order
