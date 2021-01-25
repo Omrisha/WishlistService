@@ -113,6 +113,6 @@ delete all wishlists in the database
  
 ## API Interfacing:
 
-* ShoppingCatalogService
-* UserManagementService 
+* ShoppingCatalogService - https://github.com/Omrisha/ShoppingCatalogService
+* UserManagementService - https://github.com/Omrisha/user-management-service + https://github.com/Omrisha/dummy-storage-service
 * ProductCouponService
