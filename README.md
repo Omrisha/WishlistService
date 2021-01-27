@@ -35,7 +35,7 @@ The serivce is not reactive, and will use PostgreSQL as Database, and springboot
 * Start Kafka server: `bin/kafka-server-start.sh config/server.properties`
 * Open another tab of command line/ Windows Powershell/ Windows Terminal / Terminal (for mac or linux)
 * To start sending events type `bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092`
-* Then on the prompt ">" send the wishlist json like: `{"user": {"email": "string"},"name": "string","products": [{ "productId": "string", "name": "string", "rating": 0 }]}`
+* Then on the prompt ">" send the wishlist json like: `{"user": {"email":"omri@gmail.com"}, "name":"My awesome things"}`
 
 ## JSON Structure
 
