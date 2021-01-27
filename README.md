@@ -24,6 +24,19 @@ The serivce is not reactive, and will use PostgreSQL as Database, and springboot
 * Run (Eclipse -> Run as SpringBoot App, IntelliJ -> via Play button)
 * Open http://localhost:{port you defined in application.properties}/swagger-ui.html in your browser.
 
+## Kafka Instructions
+* Use Kafka's quick guide from here: https://kafka.apache.org/quickstart or
+* Download From https://apache.mivzakim.net/kafka/2.7.0/kafka_2.13-2.7.0.tgz 
+* Open command line/ Windows Powershell/ Windows Terminal / Terminal (for mac or linux)
+* Type `tar -xzf kafka_2.13-2.7.0.tgz`
+* Type `cd kafka_2.13-2.7.0`
+* Start Zookeeper: `bin/zookeeper-server-start.sh config/zookeeper.properties`
+* Open another tab of command line/ Windows Powershell/ Windows Terminal / Terminal (for mac or linux)
+* Start Kafka server: `bin/kafka-server-start.sh config/server.properties`
+* Open another tab of command line/ Windows Powershell/ Windows Terminal / Terminal (for mac or linux)
+* To start sending events type `bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092`
+* Then on the prompt ">" send the wishlist json like: `{"user": {"email": "string"},"name": "string","products": [{ "productId": "string", "name": "string", "rating": 0 }]}`
+
 ## JSON Structure
 
 * List:

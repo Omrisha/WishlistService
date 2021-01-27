@@ -5,6 +5,9 @@ import il.ac.afeka.wishlistservice.data.UserEntity;
 public class UserBoundary {
     private String email;
 
+    public UserBoundary() {
+    }
+
     public UserBoundary(String email) {
         this.email = email;
     }
@@ -20,5 +23,12 @@ public class UserBoundary {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBoundary{" +
+                "email='" + email + '\'' +
+                '}';
     }
 }

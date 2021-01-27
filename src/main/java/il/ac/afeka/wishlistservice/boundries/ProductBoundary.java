@@ -7,6 +7,9 @@ public class ProductBoundary {
     private String name;
     private int rating;
 
+    public ProductBoundary() {
+    }
+
     public ProductBoundary(String productId, String name, int rating) {
         this.productId = productId;
         this.name = name;
@@ -41,5 +44,14 @@ public class ProductBoundary {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductBoundary{" +
+                "productId='" + productId + '\'' +
+                ", name='" + name + '\'' +
+                ", rating=" + rating +
+                '}';
     }
 }

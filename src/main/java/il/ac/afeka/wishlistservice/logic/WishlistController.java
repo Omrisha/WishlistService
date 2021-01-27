@@ -1,11 +1,12 @@
 package il.ac.afeka.wishlistservice.logic;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import il.ac.afeka.wishlistservice.boundries.WishlistBoundary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class WishlistController {
@@ -17,6 +18,7 @@ public class WishlistController {
     }
 
     @RequestMapping(path = "/wishlist",
+                    method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
     public WishlistBoundary create(@RequestBody WishlistBoundary wishlist) {
