@@ -16,6 +16,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistBoundary create(WishlistBoundary wishlist) {
+        System.err.println("From Service: " + wishlist);
         return null;
     }
 }

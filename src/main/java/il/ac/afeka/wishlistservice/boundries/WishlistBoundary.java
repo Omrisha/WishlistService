@@ -10,6 +10,9 @@ public class WishlistBoundary {
     private String name;
     private List<ProductBoundary> products;
 
+    public WishlistBoundary() {
+    }
+
     public WishlistBoundary(UserBoundary user, String name, List<ProductBoundary> products) {
         this.user = user;
         this.name = name;
@@ -54,5 +57,14 @@ public class WishlistBoundary {
 
     public void setProducts(List<ProductBoundary> products) {
         this.products = products;
+    }
+
+    @Override
+    public String toString() {
+        return "WishlistBoundary{" +
+                "user=" + user +
+                ", name='" + name + '\'' +
+                ", products=" + products +
+                '}';
     }
 }
