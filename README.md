@@ -72,29 +72,48 @@ The serivce is not reactive, and will use PostgreSQL as Database, and springboot
   rating - how users rate the product (can be acheived from Products Reviews Management Service).
 
 ## JSON Example
-
+* List boundary when using GET methods
 ```
 {
-	“user”: {
-		“email”: temp@e-commerce.com
-	},
-	“id”: 1,
-	“name”: “My Awesome things”,
-	“products”: [
-		“product”: {
-			“id”: 42,
-			“name”: “Groot”,
-			“ratings”: 42
-		},
-		“product”: {
-			“id”: 526, 
-			“name”: “Baby yoda”,
-			“ratings”: 42
-		}
-	]
+    "name": "My Wishlist",
+    “user”: {
+        “email” : “customer12@shop.com”
+    },
+    “products” : [
+        {
+           “productId”: “42”,
+           "name": "Groot",
+           “rating”: 9,
+           "price": 94,
+           "image": "groot.jpeg",
+           "details": { 
+                    "manufacturer":  "Marvel", 
+                    "collectable": true 
+            },
+           "category": { 
+                    "name":  "Toys", 
+                    "description":  "Super heros"
+            },
+        },
+        {
+           “productId”: 564”,
+           "name": "Baby Yoda",
+           “rating”: 3,
+           "price": 122,
+           "image": "grogu.jpeg",
+           "details": { 
+                    "manufacturer":  "Star Wars", 
+                    "collectable": true 
+            },
+           "category": { 
+                    "name":  "Toys", 
+                    "description":  "Super heros"
+            },
+        }
+     ]
 }
 ```
-
+* List JSON when creating new list
 ```
 {
 	“user”: {
@@ -103,48 +122,64 @@ The serivce is not reactive, and will use PostgreSQL as Database, and springboot
 	“name”: “My Awesome things”
 }
 ```
-
+* product JSON example for POST/PUT methods
 ```
 {
-	“id”: 526, 
-	“name”: “Baby yoda”,
-  “ratings”: 42
+	“productId”: 526
+}
+```
+* product JSON example for GET methods
+```
+{
+   “productId”: “42”,
+   "name": "Groot",
+   “rating”: 9,
+   "price": 94,
+   "image": "groot.jpeg",
+   "details": { 
+        "manufacturer":  "Marvel", 
+        "collectable": true 
+    },
+   "category": { 
+        "name":  "Toys", 
+        "description":  "Super heros"
+    },
 }
 ```
 
 ## API Specification
 
-- POST /wishlist
-Get new wishlist details and creates it in the DB if not exist already.
-If the user is not exist in UserManagementService the service will return status code 400.
+* POST /wishlist
+  - Get new wishlist details and creates it in the DB if not exist already.
+  - If the user is not exist in UserManagementService the service will return status code 400.
 
-- GET /wishlist/{email}/{wishlistName}
-Get wishlist data by its name.
-If not exist will return status code 404.
+* GET /wishlist/{email}/{wishlistName}
+  - Get wishlist data by its name.
+  - If not exist will return status code 404.
 
-- PUT /wishlist/{email}/{wishlistName}
-Add new product to wishlist by its name and specific user.
-To get product rating we will inteface the Products Reviews Management Service.
-If there's no rating the value will be -1.
-If there's no wishlist with the same name for the user it will return status code 404.
+* PUT /wishlist/{email}/{wishlistName}
+  - Add new product to wishlist by its name and specific user.
+  - To get product rating we will inteface the Products Reviews Management Service.
+  - If there's no rating the value will be -1.
+  - If there's no wishlist with the same name for the user it will return status code 404.
 
-- GET /wishlist?filterBy=productId&filterValue={productId}&sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
-Get all wishlist for the user specified by the email and ordered.
-Order details below.
+* GET /wishlist?filterBy=productId&filterValue={productId}&sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
+  - Get all wishlist for the user specified by the email and ordered.
+    Order details below.
 
-- GET /wishlist?filterBy=customerEmail&filterValue={customerEmail}&&sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
-Get all wishlist by specific order.
-Order details below.
+* GET /wishlist?filterBy=customerEmail&filterValue={customerEmail}&&sortBy={sortAttrEnum}&sortOrder={sortOrderEnum}&size={size}&page={page}
+  - Get all wishlist by specific order.
+    Order details below.
 
-- DELETE /wishlist
-delete all wishlists in the database
+*  DELETE /wishlist
+   - delete all wishlists in the database
 
 * sortAttrEnum can be:
-  user - sort alphabetic by user email
-  name - sort alpabetic by list name
+  - user - sort alphabetic by user email
+  - name - sort alpabetic by list name
 * sortOrderEnum can be:
-  ASC - Ascending order
-  DESC - descending order
+  - ASC - Ascending order
+  - DESC - descending order
  
 ## API Interfacing:
 
