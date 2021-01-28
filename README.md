@@ -47,9 +47,17 @@ The serivce is not reactive, and will use PostgreSQL as Database, and springboot
 * Open another tab of Command Prompt/ Windows Powershell/ Windows Terminal
 * Start Kafka server: `.\bin\windows\kafka-server-start.bat .\config\server.properties`
 * Open another tab of command line/ Windows Powershell/ Windows Terminal
-* To start sending events type `.\bin\kafka-console-producer.sh --topic t1 --bootstrap-server localhost:9092`
+* To start sending events type `.\bin\windows\kafka-console-producer.bat --topic t1 --bootstrap-server localhost:9092`
 * Then on the prompt ">" send the wishlist json like: `{"user": {"email":"omri@gmail.com"}, "name":"My awesome things"}`
 
+## Kafka Insturctions (Docker)
+* Open Command Prompt/ Windows Powershell/ Windows Terminal / Terminal
+* navigate to the WishlishService Root folder
+* type: `docker-compose up`
+* Open another instance of Command Prompt/ Windows Powershell/ Windows Terminal / Terminal
+* (Windows) To start sending events type `.\bin\windows\kafka-console-producer.bat --topic t1 --bootstrap-server localhost:9092`
+* (macOS/ Linux) To start sending events type `bin/kafka-console-producer.sh --topic t1 --bootstrap-server localhost:9092`
+* Then on the prompt ">" send the wishlist json like: `{"user": {"email":"omri@gmail.com"}, "name":"My awesome things"}`
 
 ## JSON Structure
 

@@ -12,6 +12,9 @@ public class WishlistEntity {
     private String name;
     private List<ProductEntity> products;
 
+    public WishlistEntity() {
+    }
+
     public WishlistEntity(UserEntity user, String name, List<ProductEntity> products) {
         this.user = user;
         this.name = name;

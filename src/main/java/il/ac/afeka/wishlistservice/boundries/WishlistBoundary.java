@@ -1,5 +1,6 @@
 package il.ac.afeka.wishlistservice.boundries;
 
+import il.ac.afeka.wishlistservice.data.ProductEntity;
 import il.ac.afeka.wishlistservice.data.WishlistEntity;
 
 import java.util.List;
@@ -66,5 +67,12 @@ public class WishlistBoundary {
                 ", name='" + name + '\'' +
                 ", products=" + products +
                 '}';
+    }
+
+    public WishlistBoundary toEntity() {
+        WishlistBoundary entity = new WishlistBoundary();
+        entity.setName(this.getName());
+        entity.setProducts(this.getProducts());
+        return entity;
     }
 }

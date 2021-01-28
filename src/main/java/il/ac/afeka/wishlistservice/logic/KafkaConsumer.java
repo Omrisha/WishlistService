@@ -22,8 +22,12 @@ public class KafkaConsumer {
     public Consumer<WishlistBoundary> receiveAndHandleRemoteMessage(){
         return r->{
             System.err.println(r);
-            WishlistBoundary rv = this.wishlistService.create(r);
-            System.err.println("After creating: " + rv);
+            try {
+                WishlistBoundary rv = this.wishlistService.create(r);
+                System.err.println("After creating: " + rv);
+            } catch (Exception ex) {
+                System.err.println("ERROR: " + ex.getMessage());
+            }
         };
     }
 }

@@ -1,6 +1,7 @@
 package il.ac.afeka.wishlistservice.boundries;
 
 import il.ac.afeka.wishlistservice.data.ProductEntity;
+import il.ac.afeka.wishlistservice.data.UserEntity;
 
 public class ProductBoundary {
     private String productId;
@@ -53,5 +54,11 @@ public class ProductBoundary {
                 ", name='" + name + '\'' +
                 ", rating=" + rating +
                 '}';
+    }
+
+    public ProductEntity toEntity() {
+        ProductEntity entity = new ProductEntity();
+        entity.setProductId(this.getProductId());
+        return entity;
     }
 }

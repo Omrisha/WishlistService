@@ -6,6 +6,9 @@ public class UserEntity {
     @Email
     private String email;
 
+    public UserEntity() {
+    }
+
     public UserEntity(String email) {
         this.email = email;
     }

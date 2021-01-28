@@ -31,4 +31,10 @@ public class UserBoundary {
                 "email='" + email + '\'' +
                 '}';
     }
+
+    public UserEntity toEntity() {
+        UserEntity entity = new UserEntity();
+        entity.setEmail(this.getEmail());
+        return entity;
+    }
 }

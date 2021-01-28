@@ -3,6 +3,9 @@ package il.ac.afeka.wishlistservice.data;
 public class ProductEntity {
     private String productId;
 
+    public ProductEntity() {
+    }
+
     public ProductEntity(String productId) {
         this.productId = productId;
     }
