@@ -24,18 +24,32 @@ The serivce is not reactive, and will use PostgreSQL as Database, and springboot
 * Run (Eclipse -> Run as SpringBoot App, IntelliJ -> via Play button)
 * Open http://localhost:{port you defined in application.properties}/swagger-ui.html in your browser.
 
-## Kafka Instructions
+## Kafka Instructions (macOS/ Linux)
 * Use Kafka's quick guide from here: https://kafka.apache.org/quickstart or
 * Download From https://apache.mivzakim.net/kafka/2.7.0/kafka_2.13-2.7.0.tgz 
-* Open command line/ Windows Powershell/ Windows Terminal / Terminal (for mac or linux)
+* Open Terminal
 * Type `tar -xzf kafka_2.13-2.7.0.tgz`
 * Type `cd kafka_2.13-2.7.0`
 * Start Zookeeper: `bin/zookeeper-server-start.sh config/zookeeper.properties`
 * Open another tab of command line/ Windows Powershell/ Windows Terminal / Terminal (for mac or linux)
 * Start Kafka server: `bin/kafka-server-start.sh config/server.properties`
 * Open another tab of command line/ Windows Powershell/ Windows Terminal / Terminal (for mac or linux)
-* To start sending events type `bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092`
+* To start sending events type `bin/kafka-console-producer.sh --topic t1 --bootstrap-server localhost:9092`
 * Then on the prompt ">" send the wishlist json like: `{"user": {"email":"omri@gmail.com"}, "name":"My awesome things"}`
+
+## Kafka Instructions (Windows)
+* Use Kafka's quick guide from here: https://kafka.apache.org/quickstart or
+* Download From https://apache.mivzakim.net/kafka/2.7.0/kafka_2.13-2.7.0.tgz 
+* Open Command Prompt/ Windows Powershell/ Windows Terminal
+* Type `tar -xzf kafka_2.13-2.7.0.tgz`
+* Type `cd kafka_2.13-2.7.0`
+* Start Zookeeper: `.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties`
+* Open another tab of Command Prompt/ Windows Powershell/ Windows Terminal
+* Start Kafka server: `.\bin\windows\kafka-server-start.bat .\config\server.properties`
+* Open another tab of command line/ Windows Powershell/ Windows Terminal
+* To start sending events type `.\bin\kafka-console-producer.sh --topic t1 --bootstrap-server localhost:9092`
+* Then on the prompt ">" send the wishlist json like: `{"user": {"email":"omri@gmail.com"}, "name":"My awesome things"}`
+
 
 ## JSON Structure
 
