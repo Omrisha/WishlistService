@@ -3,6 +3,7 @@ package il.ac.afeka.wishlistservice.boundries;
 import il.ac.afeka.wishlistservice.data.ProductEntity;
 import il.ac.afeka.wishlistservice.data.WishlistEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,18 +15,17 @@ public class WishlistBoundary {
     public WishlistBoundary() {
     }
 
-    public WishlistBoundary(UserBoundary user, String name, List<ProductBoundary> products) {
+    public WishlistBoundary(UserBoundary user, String name) {
         this.user = user;
         this.name = name;
-        this.products = products;
+        products = new ArrayList<>();
     }
 
     public WishlistBoundary(WishlistEntity entity) {
         setUser(new UserBoundary(entity.getUser()));
         if (entity.getName() != null)
             setName(entity.getName());
-        if (products != null && !products.isEmpty())
-            setProducts(entity.getProducts().stream().map(ProductBoundary::new).collect(Collectors.toList()));
+        products = new ArrayList<>();
     }
 
     public UserBoundary getUser() {
@@ -44,14 +44,6 @@ public class WishlistBoundary {
         this.name = name;
     }
 
-    public void addProduct(ProductBoundary product) {
-        if (products != null) {
-            if (!products.contains(product))
-                products.add(product);
-            else
-                throw new RuntimeException("Product " + product.getProductId() + " is already exists.");
-        }
-    }
     public List<ProductBoundary> getProducts() {
         return products;
     }

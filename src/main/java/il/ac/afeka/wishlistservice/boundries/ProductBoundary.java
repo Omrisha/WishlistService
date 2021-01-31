@@ -3,9 +3,16 @@ package il.ac.afeka.wishlistservice.boundries;
 import il.ac.afeka.wishlistservice.data.ProductEntity;
 import il.ac.afeka.wishlistservice.data.UserEntity;
 
+import java.util.Dictionary;
+import java.util.Map;
+
 public class ProductBoundary {
     private String productId;
     private String name;
+    private double price;
+    private String image;
+    private Map<String, Object> productDetails;
+    private CategoryBoundary category;
     private int rating;
 
     public ProductBoundary() {
@@ -47,11 +54,47 @@ public class ProductBoundary {
         this.rating = rating;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Map<String, Object> getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(Map<String, Object> productDetails) {
+        this.productDetails = productDetails;
+    }
+
+    public CategoryBoundary getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryBoundary category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "ProductBoundary{" +
                 "productId='" + productId + '\'' +
                 ", name='" + name + '\'' +
+                ", price=" + price +
+                ", image='" + image + '\'' +
+                ", productDetails=" + productDetails +
+                ", category=" + category +
                 ", rating=" + rating +
                 '}';
     }
