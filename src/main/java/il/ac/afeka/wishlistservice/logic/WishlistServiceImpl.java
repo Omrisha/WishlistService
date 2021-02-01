@@ -13,12 +13,14 @@ import il.ac.afeka.wishlistservice.enums.SortByEnum;
 import il.ac.afeka.wishlistservice.enums.SortOrderEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.webjars.NotFoundException;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -117,7 +119,31 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistBoundary[] getAll(FilterByEnum filterBy, String filterValue, SortByEnum sortBy, SortOrderEnum sortOrder, int size, int page) {
-        return new WishlistBoundary[0];
+        List<WishlistEntity> wishlists = new ArrayList<>();
+        Sort.Direction dir = sortOrder.equals(SortOrderEnum.DESC) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        switch (filterBy) {
+            case customerEmail:
+                wishlists = this.wishlistDao.findAllByUser(new UserEntity(filterValue), PageRequest.of(page, size, dir, sortBy.toString()));
+                break;
+            case productId:
+                wishlists = this.wishlistDao.findAll(PageRequest.of(page, size, dir, sortBy.toString())).getContent();
+                wishlists = wishlists.stream().filter(w -> w.getProducts().contains(new ProductEntity(filterValue))).collect(Collectors.toList());
+                break;
+            default:
+                wishlists = this.wishlistDao.findAll(PageRequest.of(page, size, dir, sortBy.toString())).getContent();
+                break;
+        }
+
+        List<WishlistBoundary> wishlistBoundaries = new ArrayList<>();
+        wishlistBoundaries = wishlists.stream().map(WishlistBoundary::new).collect(Collectors.toList());
+        List<WishlistEntity> finalWishlists = wishlists;
+        wishlistBoundaries.forEach(wb -> {
+            finalWishlists.forEach(w -> wb.setProducts(w.getProducts().stream().map(p -> getProductById(p.getProductId())).collect(Collectors.toList())));
+            wb.getProducts().forEach(pe -> pe.setRating(getRatingByProductId(pe.getProductId()).getRating()));
+        });
+
+        return (WishlistBoundary[])wishlistBoundaries.toArray();
     }
 
     @Override
