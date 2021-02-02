@@ -90,9 +90,6 @@ public class WishlistServiceImpl implements WishlistService {
             throw new RuntimeException("Wishlist with the name " + wishListName + " is not exist for " + email);
         WishlistBoundary boundary = new WishlistBoundary(rv);
         boundary.setProducts(rv.getProducts().stream().map(p -> getProductById(p.getProductId())).collect(Collectors.toList()));
-        boundary.getProducts().forEach(pe -> {
-            pe.setRating(getRatingByProductId(pe.getProductId()).getRating());
-        });
         return boundary;
     }
 
@@ -113,7 +110,9 @@ public class WishlistServiceImpl implements WishlistService {
         if (wishlistToUpdate == null)
             throw new RuntimeException("Wishlist with the name " + wishListName + " is not exist for " + email);
 
-        wishlistToUpdate.addProduct(new ProductEntity(product.getProductId()));
+        ProductEntity entity = new ProductEntity(product.getProductId());
+        //entity.setRating(getRatingByProductId(product.getProductId()).getRating());
+        wishlistToUpdate.addProduct(entity);
         this.wishlistDao.save(wishlistToUpdate);
     }
 
@@ -140,7 +139,6 @@ public class WishlistServiceImpl implements WishlistService {
         List<WishlistEntity> finalWishlists = wishlists;
         wishlistBoundaries.forEach(wb -> {
             finalWishlists.forEach(w -> wb.setProducts(w.getProducts().stream().map(p -> getProductById(p.getProductId())).collect(Collectors.toList())));
-            wb.getProducts().forEach(pe -> pe.setRating(getRatingByProductId(pe.getProductId()).getRating()));
         });
 
         return (WishlistBoundary[])wishlistBoundaries.toArray();

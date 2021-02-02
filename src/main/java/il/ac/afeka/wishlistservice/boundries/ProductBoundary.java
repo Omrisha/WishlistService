@@ -28,6 +28,7 @@ public class ProductBoundary {
         if (entity.getProductId() != null) {
             setProductId(entity.getProductId());
         }
+        setRating(entity.getRating());
     }
 
     public String getProductId() {
