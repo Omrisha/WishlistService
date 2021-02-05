@@ -12,7 +12,7 @@ This service is a final project for Cloud Computing Course in Afeka College of M
 
 A simple spring boot service to give a user a way to manage and create Wish list of products he wishes to buy.
 
-The serivce is not reactive, and will use PostgreSQL as Database, and springboot web.
+The serivce is not reactive, and will use MongoDB as Database, and springboot web.
 
 ## Installation
 
