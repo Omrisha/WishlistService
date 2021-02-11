@@ -1,5 +1,6 @@
 package il.ac.afeka.wishlistservice.logic;
 
+import il.ac.afeka.wishlistservice.boundries.NewWishlishtBoundary;
 import il.ac.afeka.wishlistservice.boundries.WishlistBoundary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ public class KafkaConsumer {
     }
 
     @Bean
-    public Consumer<WishlistBoundary> receiveAndHandleRemoteMessage(){
+    public Consumer<NewWishlishtBoundary> receiveAndHandleRemoteMessage(){
         return r->{
             System.err.println(r);
             try {
