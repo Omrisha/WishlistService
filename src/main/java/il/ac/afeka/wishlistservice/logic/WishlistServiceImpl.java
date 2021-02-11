@@ -63,7 +63,7 @@ public class WishlistServiceImpl implements WishlistService {
 
         UserBoundary user = getUserByEmail(wishlist.getUser().getEmail());
         if (user == null) {
-            throw new BadRequestException("User is not exists.");
+            throw new BadRequestException("User with " + wishlist.getUser().getEmail() + " is not found");
         }
         WishlistEntity existEntity = this.wishlistDao.findByName(wishlist.getName());
         if (existEntity != null)
@@ -87,13 +87,19 @@ public class WishlistServiceImpl implements WishlistService {
 
         UserBoundary user = getUserByEmail(email);
         if (user == null) {
-            throw new BadRequestException("User is not exists.");
+            throw new BadRequestException("User with " + email + " is not found");
         }
         WishlistEntity rv = this.wishlistDao.findById(email + WishlistEntity.KEY_DELIMETER + wishListName).orElse(null);
         if (rv == null)
             throw new NotFoundException("Wishlist with the name " + wishListName + " is not exist for " + email);
         WishlistBoundary boundary = new WishlistBoundary(rv);
-        boundary.setProducts(rv.getProducts().stream().map(p -> getProductById(p.getProductId())).collect(Collectors.toList()));
+        rv.getProducts().forEach(e -> {
+            ProductBoundary pb = getProductById(e.getProductId());
+            if (pb != null) {
+                pb.setRating(e.getRating());
+                boundary.getProducts().add(pb);
+            }
+        });
         return boundary;
     }
 
@@ -115,7 +121,7 @@ public class WishlistServiceImpl implements WishlistService {
             throw new NotFoundException("Wishlist with the name " + wishListName + " is not exist for " + email);
 
         ProductEntity entity = new ProductEntity(product.getId());
-        //entity.setRating(getRatingByProductId(product.getProductId()).getRating());
+        entity.setRating(getRatingByProductId(product.getId()).getRating());
         wishlistToUpdate.addProduct(entity);
         this.wishlistDao.save(wishlistToUpdate);
     }
@@ -143,7 +149,14 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistBoundaries = wishlists.stream().map(WishlistBoundary::new).collect(Collectors.toList());
         List<WishlistEntity> finalWishlists = wishlists;
         wishlistBoundaries.forEach(wb -> {
-            finalWishlists.forEach(w -> wb.setProducts(w.getProducts().stream().map(p -> getProductById(p.getProductId())).collect(Collectors.toList())));
+            List<ProductBoundary> boundaries = new ArrayList<>();
+            List<ProductEntity> entities = finalWishlists.stream().filter(e -> e.getId().equals(wb.getUser().getEmail()+WishlistEntity.KEY_DELIMETER+wb.getName())).findFirst().get().getProducts();
+            for (ProductEntity pb: entities) {
+                ProductBoundary boundary = getProductById(pb.getProductId());
+                boundary.setRating(pb.getRating());
+                boundaries.add(boundary);
+            }
+            wb.setProducts(boundaries);
         });
 
         return wishlistBoundaries.stream().toArray(WishlistBoundary[]::new);
@@ -169,7 +182,7 @@ public class WishlistServiceImpl implements WishlistService {
                     UserBoundary.class,
                     email);
         } catch (Exception ex) {
-            throw new BadRequestException("User with " + email + " is not found");
+            return null;
         }
     }
     private ProductBoundary getProductById(String productId) {
@@ -179,7 +192,7 @@ public class WishlistServiceImpl implements WishlistService {
                     ProductBoundary.class,
                     productId);
         } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage());
+            return null;
         }
     }
     private ProductReviewBoundary getRatingByProductId(String productId) {
@@ -193,7 +206,7 @@ public class WishlistServiceImpl implements WishlistService {
                 return new ProductReviewBoundary(productId, -1);
             return product;
         } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage());
+            return new ProductReviewBoundary(productId, -1);
         }
     }
 }
