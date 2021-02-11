@@ -8,6 +8,8 @@ import il.ac.afeka.wishlistservice.data.WishlistEntity;
 import il.ac.afeka.wishlistservice.enums.FilterByEnum;
 import il.ac.afeka.wishlistservice.enums.SortByEnum;
 import il.ac.afeka.wishlistservice.enums.SortOrderEnum;
+import il.ac.afeka.wishlistservice.errors.BadRequestException;
+import il.ac.afeka.wishlistservice.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -50,7 +52,7 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    public WishlistBoundary create(WishlistBoundary wishlist) {
+    public WishlistBoundary create(NewWishlishtBoundary wishlist) {
         System.err.println("From Service: " + wishlist);
         if (wishlist.getUser() == null) {
             throw new RuntimeException("User is not defined");
@@ -61,7 +63,12 @@ public class WishlistServiceImpl implements WishlistService {
 
         UserBoundary user = getUserByEmail(wishlist.getUser().getEmail());
         if (user == null) {
-            throw new RuntimeException("User is not exists.");
+            throw new BadRequestException("User is not exists.");
+        }
+        WishlistEntity existEntity = this.wishlistDao.findByName(wishlist.getName());
+        if (existEntity != null)
+        {
+            throw new BadRequestException("Wishlist with this name is already exists.");
         }
         WishlistEntity entity = new WishlistEntity(user.toEntity(), wishlist.getName(), new ArrayList<>());
         entity.setId(user.getEmail() + WishlistEntity.KEY_DELIMETER + wishlist.getName());
@@ -80,11 +87,11 @@ public class WishlistServiceImpl implements WishlistService {
 
         UserBoundary user = getUserByEmail(email);
         if (user == null) {
-            throw new RuntimeException("User is not exists.");
+            throw new BadRequestException("User is not exists.");
         }
         WishlistEntity rv = this.wishlistDao.findById(email + WishlistEntity.KEY_DELIMETER + wishListName).orElse(null);
         if (rv == null)
-            throw new RuntimeException("Wishlist with the name " + wishListName + " is not exist for " + email);
+            throw new NotFoundException("Wishlist with the name " + wishListName + " is not exist for " + email);
         WishlistBoundary boundary = new WishlistBoundary(rv);
         boundary.setProducts(rv.getProducts().stream().map(p -> getProductById(p.getProductId())).collect(Collectors.toList()));
         return boundary;
@@ -101,11 +108,11 @@ public class WishlistServiceImpl implements WishlistService {
 
         ProductBoundary product = getProductById(productBoundary.getProductId());
         if (product == null) {
-            throw new RuntimeException("Product is not exists.");
+            throw new BadRequestException("Product is not exists.");
         }
         WishlistEntity wishlistToUpdate = this.wishlistDao.findById(email + WishlistEntity.KEY_DELIMETER + wishListName).orElse(null);
         if (wishlistToUpdate == null)
-            throw new RuntimeException("Wishlist with the name " + wishListName + " is not exist for " + email);
+            throw new NotFoundException("Wishlist with the name " + wishListName + " is not exist for " + email);
 
         ProductEntity entity = new ProductEntity(product.getId());
         //entity.setRating(getRatingByProductId(product.getProductId()).getRating());
@@ -162,7 +169,7 @@ public class WishlistServiceImpl implements WishlistService {
                     UserBoundary.class,
                     email);
         } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new BadRequestException("User with " + email + " is not found");
         }
     }
     private ProductBoundary getProductById(String productId) {

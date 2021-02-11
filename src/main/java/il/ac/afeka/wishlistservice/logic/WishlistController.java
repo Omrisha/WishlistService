@@ -1,6 +1,7 @@
 package il.ac.afeka.wishlistservice.logic;
 
 import il.ac.afeka.wishlistservice.boundries.AddProductBoundary;
+import il.ac.afeka.wishlistservice.boundries.NewWishlishtBoundary;
 import il.ac.afeka.wishlistservice.boundries.ProductBoundary;
 import il.ac.afeka.wishlistservice.boundries.WishlistBoundary;
 import il.ac.afeka.wishlistservice.enums.FilterByEnum;
@@ -25,7 +26,7 @@ public class WishlistController {
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public WishlistBoundary create(@RequestBody WishlistBoundary wishlist) {
+    public WishlistBoundary create(@RequestBody NewWishlishtBoundary wishlist) {
         return this.service.create(wishlist);
     }
 

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface WishlistDao extends PagingAndSortingRepository<WishlistEntity, String> {
     List<WishlistEntity> findAllByUser(@Param("user") UserEntity user, Pageable request);
+    WishlistEntity findByName(@Param("name") String name);
 }
