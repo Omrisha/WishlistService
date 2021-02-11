@@ -1,5 +1,6 @@
 package il.ac.afeka.wishlistservice.logic;
 
+import il.ac.afeka.wishlistservice.boundries.AddProductBoundary;
 import il.ac.afeka.wishlistservice.boundries.ProductBoundary;
 import il.ac.afeka.wishlistservice.boundries.WishlistBoundary;
 import il.ac.afeka.wishlistservice.enums.FilterByEnum;
@@ -11,7 +12,7 @@ public interface WishlistService {
 
     WishlistBoundary getWishlistById(String email, String wishListName);
 
-    void addProduct(String email, String wishListName, ProductBoundary productBoundary);
+    void addProduct(String email, String wishListName, AddProductBoundary productBoundary);
 
     WishlistBoundary[] getAll(FilterByEnum filterBy, String filterValue, SortByEnum sortBy, SortOrderEnum sortOrder, int size, int page);
 

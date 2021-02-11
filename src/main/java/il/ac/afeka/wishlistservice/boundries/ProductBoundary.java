@@ -1,13 +1,11 @@
 package il.ac.afeka.wishlistservice.boundries;
 
 import il.ac.afeka.wishlistservice.data.ProductEntity;
-import il.ac.afeka.wishlistservice.data.UserEntity;
 
-import java.util.Dictionary;
 import java.util.Map;
 
 public class ProductBoundary {
-    private String productId;
+    private String id;
     private String name;
     private double price;
     private String image;
@@ -19,24 +17,24 @@ public class ProductBoundary {
     }
 
     public ProductBoundary(String productId, String name, int rating) {
-        this.productId = productId;
+        this.id = productId;
         this.name = name;
         this.rating = rating;
     }
 
     public ProductBoundary(ProductEntity entity) {
         if (entity.getProductId() != null) {
-            setProductId(entity.getProductId());
+            setId(entity.getProductId());
         }
         setRating(entity.getRating());
     }
 
-    public String getProductId() {
-        return productId;
+    public String getId() {
+        return id;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -90,7 +88,7 @@ public class ProductBoundary {
     @Override
     public String toString() {
         return "ProductBoundary{" +
-                "productId='" + productId + '\'' +
+                "productId='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", image='" + image + '\'' +
@@ -102,7 +100,7 @@ public class ProductBoundary {
 
     public ProductEntity toEntity() {
         ProductEntity entity = new ProductEntity();
-        entity.setProductId(this.getProductId());
+        entity.setProductId(this.getId());
         return entity;
     }
 }

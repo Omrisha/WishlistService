@@ -9,6 +9,8 @@ import java.util.List;
 @Document(collection = "wishlists")
 public class WishlistEntity {
     public static final String KEY_DELIMETER = "#";
+    @Id
+    private String id;
     private UserEntity user;
     private String name;
     private List<ProductEntity> products;
@@ -22,9 +24,12 @@ public class WishlistEntity {
         this.products = products;
     }
 
-    @Id
     public String getId() {
-        return getUser().getEmail() + KEY_DELIMETER + name;
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public UserEntity getUser() {

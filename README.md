@@ -18,6 +18,20 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
 
 - Run the MongoDB local database with the following command (using Docker): `docker run --name mongotest -p 27017:27017 -d mongo`
 - Clone the repo: `git clone https://github.com/Omrisha/WishlistService`
+- in application.properties set kafka topic in the following attribute `spring.cloud.stream.bindings.input-consumer.destination`
+- Run Kafka Environment from the Instructions written below.
+- This service relies on other services (ShoppingCatalogService, UserManagementService, ProductCouponService):
+  - Download the required services
+  - unpack them
+  - run any other environment requirements that they require (database, other services)
+  - run these services
+  - in UserManagementService create a user using its required API (`/users`)
+  - in ShoppingCatalogService create a product and category using (`/shopping/categories`, `/shopping/products`) 
+  - if there's no rating for specific product in ProductCouponService its rating will be -1
+- in application.properties config the address and port of the services:
+  - ShoppingCatalogService - `usersService=http://localhost:8082/users`
+  - UserManagementService - `productsService=http://localhost:8083/shopping`
+  - ProductCouponService - `reviewsService=http://localhost:8085/reviews`
 - In IntelliJ:
   - Open project in IntelliJ (Open project menu or import from git menu)
   - After opening let gradle built and make the project.
@@ -85,14 +99,14 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
 ```json
 {
     "name": "My Wishlist",
-    “user”: {
-        “email” : “customer12@shop.com”
+    "user": {
+        "email":"customer12@shop.com"
     },
-    “products” : [
+    "products" : [
         {
-           “productId”: “42”,
+           "id": "42",
            "name": "Groot",
-           “rating”: 9,
+           "rating": 9,
            "price": 94,
            "image": "groot.jpeg",
            "details": {
@@ -102,12 +116,12 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
            "category": {
                     "name":  "Toys",
                     "description":  "Super heros"
-            },
+            }
         },
         {
-           “productId”: 564”,
+           "id": "564",
            "name": "Baby Yoda",
-           “rating”: 3,
+           "rating": 3,
            "price": 122,
            "image": "grogu.jpeg",
            "details": {
@@ -117,7 +131,7 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
            "category": {
                     "name":  "Toys",
                     "description":  "Super heros"
-            },
+            }
         }
      ]
 }
@@ -127,10 +141,10 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
 
 ```json
 {
- “user”: {
-  “email”: temp@e-commerce.com
+ "user": {
+  "email": "temp@e-commerce.com"
  },
- “name”: “My Awesome things”
+ "name": "My Awesome things"
 }
 ```
 
@@ -138,7 +152,7 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
 
 ```json
 {
- “productId”: 526
+ "productId": 526
 }
 ```
 
@@ -146,9 +160,9 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
 
 ```json
 {
-   “productId”: “42”,
+   "id": "42",
    "name": "Groot",
-   “rating”: 9,
+   "rating": 9,
    "price": 94,
    "image": "groot.jpeg",
    "details": {
@@ -158,7 +172,7 @@ The service is not reactive, uses MongoDB as a Database and Spring Boot web.
    "category": {
         "name":  "Toys",
         "description":  "Super heros"
-    },
+    }
 }
 ```
 

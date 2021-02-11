@@ -1,9 +1,6 @@
 package il.ac.afeka.wishlistservice.logic;
 
-import il.ac.afeka.wishlistservice.boundries.ProductBoundary;
-import il.ac.afeka.wishlistservice.boundries.ProductReviewBoundary;
-import il.ac.afeka.wishlistservice.boundries.UserBoundary;
-import il.ac.afeka.wishlistservice.boundries.WishlistBoundary;
+import il.ac.afeka.wishlistservice.boundries.*;
 import il.ac.afeka.wishlistservice.data.ProductEntity;
 import il.ac.afeka.wishlistservice.data.UserEntity;
 import il.ac.afeka.wishlistservice.data.WishlistDao;
@@ -17,11 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,6 +64,7 @@ public class WishlistServiceImpl implements WishlistService {
             throw new RuntimeException("User is not exists.");
         }
         WishlistEntity entity = new WishlistEntity(user.toEntity(), wishlist.getName(), new ArrayList<>());
+        entity.setId(user.getEmail() + WishlistEntity.KEY_DELIMETER + wishlist.getName());
         WishlistEntity rv = this.wishlistDao.save(entity);
         return new WishlistBoundary(rv);
     }
@@ -94,7 +91,7 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    public void addProduct(String email, String wishListName, ProductBoundary productBoundary) {
+    public void addProduct(String email, String wishListName, AddProductBoundary productBoundary) {
         if (wishListName == null) {
             throw new RuntimeException("User is not defined");
         }
@@ -110,7 +107,7 @@ public class WishlistServiceImpl implements WishlistService {
         if (wishlistToUpdate == null)
             throw new RuntimeException("Wishlist with the name " + wishListName + " is not exist for " + email);
 
-        ProductEntity entity = new ProductEntity(product.getProductId());
+        ProductEntity entity = new ProductEntity(product.getId());
         //entity.setRating(getRatingByProductId(product.getProductId()).getRating());
         wishlistToUpdate.addProduct(entity);
         this.wishlistDao.save(wishlistToUpdate);
@@ -127,8 +124,9 @@ public class WishlistServiceImpl implements WishlistService {
                 break;
             case productId:
                 wishlists = this.wishlistDao.findAll(PageRequest.of(page, size, dir, sortBy.toString())).getContent();
-                wishlists = wishlists.stream().filter(w -> w.getProducts().contains(new ProductEntity(filterValue))).collect(Collectors.toList());
+                wishlists = wishlists.stream().filter(w -> findProductInWishlist(filterValue, w.getProducts())).collect(Collectors.toList());
                 break;
+            case none:
             default:
                 wishlists = this.wishlistDao.findAll(PageRequest.of(page, size, dir, sortBy.toString())).getContent();
                 break;
@@ -141,7 +139,7 @@ public class WishlistServiceImpl implements WishlistService {
             finalWishlists.forEach(w -> wb.setProducts(w.getProducts().stream().map(p -> getProductById(p.getProductId())).collect(Collectors.toList())));
         });
 
-        return (WishlistBoundary[])wishlistBoundaries.toArray();
+        return wishlistBoundaries.stream().toArray(WishlistBoundary[]::new);
     }
 
     @Override
@@ -149,6 +147,14 @@ public class WishlistServiceImpl implements WishlistService {
         this.wishlistDao.deleteAll();
     }
 
+    private boolean findProductInWishlist(String productId, List<ProductEntity> products) {
+        for (ProductEntity customer : products) {
+            if (customer.getProductId().equals(productId)) {
+                return true;
+            }
+        }
+        return false;
+    }
     private UserBoundary getUserByEmail(String email) {
         try {
             return this.restTemplate.getForObject(
